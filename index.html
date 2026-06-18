@@ -19,7 +19,8 @@
     - Font fallback uses system sans-serif. If you have licensed Aeonik available,
       replace the font-family in :root with Aeonik.
   -->
-
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
   <style>
     :root {
       --ink: #080225;
@@ -37,14 +38,14 @@
       --panel-strong: rgba(255,255,255,.075);
       --radius: 14px;
       --max: 1440px;
-      --font-family: 'Montserrat', sans-serif;
+      --font-family: 'Poppins', sans-serif;
     }
 
     * { box-sizing: border-box; }
     html { scroll-behavior: smooth; }
     body {
       margin: 0;
-      font-family: var(--font);
+      font-family: var(--font-family);
       color: var(--white);
       background:
         radial-gradient(circle at 75% 0%, rgba(114,51,247,.22), transparent 30%),
