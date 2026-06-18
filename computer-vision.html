@@ -1,0 +1,390 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Computer Vision | Arm Early Developer</title>
+
+  <!--
+    Arm Early Developer - Technology Topic Page
+    ------------------------------------------------
+    Save this file as computer-vision.html in the same GitHub repository as index.html.
+    It expects the same /assets folder used by your homepage.
+  -->
+
+  <style>
+    :root {
+      --ink: #080225;
+      --white: #ffffff;
+      --light: #f3f3f3;
+      --gray: #6f6f6f;
+      --violet: #7233f7;
+      --blue: #0057ff;
+      --teal: #02eaea;
+      --orange: #f26419;
+      --yellow: #ffae2d;
+      --line: rgba(255,255,255,.18);
+      --muted: rgba(255,255,255,.72);
+      --panel: rgba(255,255,255,.045);
+      --panel-strong: rgba(255,255,255,.075);
+      --max: 1440px;
+      --font: "Aeonik", "Poppins", "Inter", "Segoe UI", system-ui, sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: var(--font);
+      color: var(--white);
+      background:
+        radial-gradient(circle at 85% 0%, rgba(114,51,247,.24), transparent 32%),
+        radial-gradient(circle at 12% 12%, rgba(0,87,255,.18), transparent 30%),
+        var(--ink);
+      line-height: 1.35;
+    }
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; }
+
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: rgba(8,2,37,.88);
+      backdrop-filter: blur(18px);
+      border-bottom: 1px solid var(--line);
+    }
+    .nav {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 18px 44px;
+      display: flex;
+      align-items: center;
+      gap: 28px;
+    }
+    .arm-logo {
+      font-size: 42px;
+      letter-spacing: -0.06em;
+      font-weight: 700;
+      line-height: 1;
+    }
+    .divider {
+      width: 1px;
+      height: 34px;
+      background: rgba(255,255,255,.35);
+    }
+    .nav-links { display: flex; gap: 30px; align-items: center; font-size: 15px; }
+    .nav-actions { display: flex; align-items: center; gap: 18px; margin-left: auto; }
+    .search { font-size: 22px; line-height: 1; opacity: .9; }
+    .sign-in { border: 1px solid rgba(255,255,255,.55); padding: 10px 18px; border-radius: 6px; }
+
+    .topic-hero {
+      position: relative;
+      overflow: hidden;
+      min-height: 560px;
+      border-bottom: 1px solid var(--line);
+    }
+    .topic-hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, rgba(8,2,37,.98) 0%, rgba(8,2,37,.92) 34%, rgba(8,2,37,.35) 68%, rgba(8,2,37,.72) 100%);
+      z-index: 1;
+    }
+    .topic-hero::after {
+      content: "";
+      position: absolute;
+      width: 680px;
+      height: 680px;
+      right: -220px;
+      bottom: -360px;
+      border-radius: 50%;
+      border: 5px solid transparent;
+      background: linear-gradient(120deg, var(--teal), var(--blue), var(--violet)) border-box;
+      -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      opacity: .85;
+      z-index: 2;
+    }
+    .topic-image {
+      position: absolute;
+      inset: 0 0 0 44%;
+      background-image: url("assets/app-vision.svg");
+      background-size: cover;
+      background-position: center right;
+      opacity: .9;
+    }
+    .topic-content {
+      position: relative;
+      z-index: 3;
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 96px 44px 120px;
+    }
+    .breadcrumb {
+      color: var(--muted);
+      font-size: 14px;
+      margin-bottom: 36px;
+    }
+    .topic-title {
+      margin: 0 0 28px;
+      max-width: 950px;
+      font-size: clamp(72px, 8vw, 132px);
+      line-height: .9;
+      letter-spacing: -0.06em;
+      font-weight: 400;
+    }
+    .topic-lede {
+      max-width: 680px;
+      color: var(--muted);
+      font-size: clamp(22px, 2.2vw, 34px);
+      line-height: 1.15;
+      margin: 0 0 38px;
+      letter-spacing: -0.025em;
+    }
+    .cta-row { display: flex; gap: 22px; flex-wrap: wrap; }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 18px;
+      padding: 17px 30px;
+      border-radius: 6px;
+      border: 1px solid rgba(255,255,255,.45);
+      min-width: 230px;
+      justify-content: space-between;
+      font-size: 17px;
+    }
+    .btn-primary { background: linear-gradient(100deg, var(--violet), var(--blue)); border-color: transparent; }
+
+    .section {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 44px;
+      border-bottom: 1px solid var(--line);
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 56px;
+    }
+    .section-title h2 {
+      margin: 0 0 16px;
+      font-size: 44px;
+      line-height: .95;
+      letter-spacing: -0.045em;
+      font-weight: 400;
+    }
+    .section-title p { margin: 0; color: var(--muted); font-size: 16px; }
+    .learning-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+    }
+    .learning-card {
+      min-height: 190px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      transition: transform .2s ease, border-color .2s ease, background .2s ease;
+    }
+    .learning-card:hover {
+      transform: translateY(-3px);
+      border-color: rgba(2,234,234,.7);
+      background: var(--panel-strong);
+    }
+    .product-type {
+      align-self: flex-start;
+      margin-bottom: 18px;
+      padding: 5px 9px;
+      border-radius: 4px;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      color: var(--white);
+      background: linear-gradient(100deg, var(--violet), var(--blue));
+    }
+    .learning-card h3 {
+      margin: 0 0 12px;
+      font-size: 28px;
+      line-height: 1.02;
+      letter-spacing: -0.035em;
+      font-weight: 400;
+    }
+    .learning-card p { margin: 0; color: var(--muted); font-size: 15px; }
+    .learning-card .arrow { margin-top: auto; align-self: flex-end; font-size: 24px; }
+
+    .wide-card { grid-column: 1 / -1; }
+    .skills-list {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 18px;
+    }
+    .skill-pill {
+      padding: 18px;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.04);
+      border-radius: 8px;
+      font-size: 18px;
+      letter-spacing: -0.02em;
+    }
+
+    footer {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 34px 44px;
+      color: var(--muted);
+      font-size: 13px;
+      display: flex;
+      gap: 26px;
+    }
+    footer span:first-child { margin-right: auto; }
+
+    @media (max-width: 1000px) {
+      .nav-links { display: none; }
+      .topic-image { inset-left: 20%; opacity: .45; }
+      .section { grid-template-columns: 1fr; }
+      .learning-grid, .skills-list { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 650px) {
+      .nav, .topic-content, .section, footer { padding-left: 22px; padding-right: 22px; }
+      .topic-hero { min-height: 700px; }
+      .btn { width: 100%; }
+      footer { flex-wrap: wrap; }
+    }
+  </style>
+</head>
+<body>
+
+<header class="site-header">
+  <nav class="nav" aria-label="Primary navigation">
+    <a class="arm-logo" href="index.html">arm</a>
+    <span class="divider"></span>
+    <div class="nav-links">
+      <a href="index.html#about">About</a>
+      <a href="index.html#projects">Projects</a>
+      <a href="index.html#community">Community</a>
+      <a href="index.html#technologies">Technologies</a>
+      <a href="#">Support</a>
+    </div>
+    <div class="nav-actions">
+      <a class="search" href="#" aria-label="Search">⌕</a>
+      <a class="sign-in" href="#">Sign in</a>
+    </div>
+  </nav>
+</header>
+
+<main>
+  <section class="topic-hero" id="top">
+    <div class="topic-image" aria-hidden="true"></div>
+    <div class="topic-content">
+      <div class="breadcrumb"><a href="index.html#technologies">Explore Technologies</a> / AI / Computer Vision</div>
+      <h1 class="topic-title">Computer Vision</h1>
+      <p class="topic-lede">Everything you need to learn and build with Computer Vision on Arm.</p>
+      <div class="cta-row">
+        <a class="btn btn-primary" href="#start">Start here <span>→</span></a>
+        <a class="btn" href="#applications">Build applications <span>→</span></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="start">
+    <div class="section-title">
+      <h2>Start<br>Here</h2>
+      <p>Begin with a short introduction to the ideas, use cases and possibilities of computer vision.</p>
+    </div>
+    <div class="learning-grid">
+      <a class="learning-card wide-card" href="#">
+        <span class="product-type">Intro Series</span>
+        <h3>Intro to Computer Vision</h3>
+        <p>Discover how machines use images and video to sense, interpret and respond to the world.</p>
+        <span class="arrow">→</span>
+      </a>
+    </div>
+  </section>
+
+  <section class="section" id="literacy">
+    <div class="section-title">
+      <h2>Build<br>Literacy</h2>
+      <p>Develop the core vocabulary and confidence to understand computer vision systems.</p>
+    </div>
+    <div class="learning-grid">
+      <a class="learning-card wide-card" href="#">
+        <span class="product-type">Essentials Series</span>
+        <h3>Computer Vision Essentials</h3>
+        <p>Learn the essential concepts behind images, models, classification, detection and evaluation.</p>
+        <span class="arrow">→</span>
+      </a>
+    </div>
+  </section>
+
+  <section class="section" id="skills">
+    <div class="section-title">
+      <h2>Develop<br>Skills</h2>
+      <p>Practise focused skills that support real-world computer vision development.</p>
+    </div>
+    <div class="learning-card wide-card">
+      <span class="product-type">Skills Boosters</span>
+      <h3>Computer Vision Skill Boosters</h3>
+      <div class="skills-list">
+        <a class="skill-pill" href="#">Prompting Vision Models</a>
+        <a class="skill-pill" href="#">Model Evaluation</a>
+        <a class="skill-pill" href="#">Edge AI Deployment</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="understand">
+    <div class="section-title">
+      <h2>Understand<br>the Technology</h2>
+      <p>Go deeper into how computer vision systems work from image capture to model behaviour.</p>
+    </div>
+    <div class="learning-grid">
+      <a class="learning-card" href="#">
+        <span class="product-type">Technology Explainer</span>
+        <h3>How Computer Vision Works</h3>
+        <p>Understand the pipeline from pixels to predictions.</p>
+        <span class="arrow">→</span>
+      </a>
+      <a class="learning-card" href="#">
+        <span class="product-type">Technology Explainer</span>
+        <h3>How Cameras Capture Images</h3>
+        <p>Explore sensors, colour, light and image data.</p>
+        <span class="arrow">→</span>
+      </a>
+      <a class="learning-card wide-card" href="#">
+        <span class="product-type">Technology Explainer</span>
+        <h3>How Vision Models Learn</h3>
+        <p>See how training data, labels, features and feedback shape model behaviour.</p>
+        <span class="arrow">→</span>
+      </a>
+    </div>
+  </section>
+
+  <section class="section" id="applications">
+    <div class="section-title">
+      <h2>Build<br>Applications</h2>
+      <p>Apply your understanding through an end-to-end application pathway.</p>
+    </div>
+    <div class="learning-grid">
+      <a class="learning-card wide-card" href="#">
+        <span class="product-type">Application Pathway</span>
+        <h3>Computer Vision on the Edge</h3>
+        <p>Build, test and refine intelligent vision systems that run on Arm-based edge devices.</p>
+        <span class="arrow">→</span>
+      </a>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <span>© 2025 Arm Holdings. All rights reserved.</span>
+  <span>Privacy</span>
+  <span>Terms</span>
+  <span>Cookies</span>
+</footer>
+
+</body>
+</html>
